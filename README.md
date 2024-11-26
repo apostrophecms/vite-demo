@@ -2,6 +2,36 @@
 
 ## Installation
 
+### GitHub Codespaces
+
+You can use GitHub Codespaces to run this demo in the cloud. Click the button below to create a new Codespace:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/apostrophecms/vite-demo/tree/PRO-6807-demo-features)
+
+Open a new terminal when the Codespace is ready and run the following commands:
+
+```bash
+$ node app @apostrophecms/user:add admin admin
+## Type `admin` as the password when prompted
+$ npm run dev
+```
+
+**Only in the web VSCode editor:**
+The easiest way to test HMR is to open the VSCode Preview (Ports tab in the bottom panel, click the Preview icon in the Forwarded Address section for port 3000). You can also open the app in your browser (VSCode will open a new tab with the preview URL) but in order to see the HMR in action you need to make port 3000 Public accessible (right click on the port number in the Ports tab and select Port Visibility -> Public).
+
+The container comes with pre-installed MongoDB and VSCode extension for MongoDB. It will open a new tab in your browser editor and you can connect to the MongoDB server with Open Form -> Connect to MongoDB button. You can then use Create playground to run queries against the database. Replace the default template contents with the following and click Run:
+
+```js
+/* global use, db */
+use('a4-playground');
+db.getCollection('aposDocs').findOne({
+  type: '@apostrophecms/home-page',
+  aposMode: 'draft'
+});
+```
+
+### Local installation
+
 Clone the repository and install the dependencies:
 
 ```bash
@@ -13,7 +43,7 @@ $ npm install
 If you don't have a MongoDB server running and you have docker compose installed, you can start a MongoDB server with:
 
 ```bash
-$ docker-compose up -d
+$ docker compose up -d --remove-orphans
 ```
 
 You can stop the MongoDB server later with:
