@@ -15,7 +15,7 @@ export default defineConfig({
     svelte({
       // We need to tell Svelte where to find the config file,
       // because the Vite root is not the same as the Apostrophe root.
-      configFile: path.join(__dirname, 'svelte.config.js')
+      configFile: path.join(process.cwd(), 'svelte.config.js')
     })
   ],
   server: {

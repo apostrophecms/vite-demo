@@ -5,9 +5,8 @@
 Clone the repository and install the dependencies:
 
 ```bash
-$ git clone git@github.com:apostrophecms/starter-kit-essentials.git
-$ cd starter-kit-essentials
-$ git checkout vite-demo
+$ git clone https://github.com/apostrophecms/vite-demo.git
+$ cd vite-demo
 $ npm install
 ```
 
