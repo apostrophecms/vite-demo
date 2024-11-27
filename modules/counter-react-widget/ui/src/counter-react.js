@@ -4,6 +4,9 @@ import App from './app/App.jsx';
 
 // Environments are available here (`import.meta.env.PROD`, `import.meta.env.DEV`, etc.)
 // https://vite.dev/guide/env-and-mode.html
+
+// Apos widget player is executed when needed - initial page load, widget
+// refresh, etc.
 export default () => {
   apos.util.widgetPlayers['counter-react'] = {
     selector: '[data-apos-react-widget]',

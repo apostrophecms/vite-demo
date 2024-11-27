@@ -7,7 +7,7 @@ const { id, options, widget } = defineProps({
   options: Object
 });
 
-const count = ref(widget.counter);
+const count = ref(widget.counter.count || 0);
 const message = ref('');
 const debugState = ref(false);
 const debugLabel = computed(() => `${debugState.value ? 'Hide' : 'Show'} Debug`);
@@ -19,7 +19,7 @@ const onClick = () => {
   count.value += 1;
 
   apos.http
-    .post("/api/v1/asset/count", {
+    .post("/api/v1/counter/count", {
       body: {
         type: widget.type,
         id: widget._id,
@@ -27,13 +27,12 @@ const onClick = () => {
       },
     })
     .then(console.log)
-    .catch((err) => (message.value = err.message));
+    .catch((err) => (message.value = err.body?.data?.message || 'Server Error'));
 };
 
 const onDebugClick = () => {
   debugState.value = !debugState.value;
 };
-
 </script>
 
 <template>

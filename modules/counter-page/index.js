@@ -18,7 +18,6 @@ export default {
             'counter-react': {
               example: 'options from the page schema'
             }
-
           }
         }
       }

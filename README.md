@@ -8,6 +8,7 @@ This is a demo project that showcases advanced features of ApostropheCMS and Vit
 - [The demo](#the-demo)
 - [The frameworks setup](#the-frameworks-setup)
 - [Counter apps as widgets](#counter-apps-as-widgets)
+  - [In depth Counter App explanation](#in-depth-counter-app-explanation)
 - [Tailwind CSS configuration steps](#tailwind-css-configuration-steps)
 - [How it works (for nerds)](#how-it-works-for-nerds)
   - [Sources discovery](#sources-discovery)
@@ -37,7 +38,7 @@ $ npm run dev
 **Only if in the web VSCode editor:**
 The easiest way to test HMR is to open the VSCode Preview (Ports tab in the bottom panel, click the Preview icon in the Forwarded Address section for port 3000). You can also open the app in your browser (VSCode will open a new tab with the preview URL) but in order to see the HMR in action you need to make port 3000 Public accessible (right click on the port number in the Ports tab and select Port Visibility -> Public).
 
-The container comes with pre-installed MongoDB and VSCode extension for MongoDB. It will open a new tab in your browser editor and you can connect to the MongoDB server with Open Form -> Connect to MongoDB button. You can then use Create playground to run queries against the database. Replace the default template contents with the following and click Run:
+The container comes with pre-installed MongoDB and VSCode extension for MongoDB so you can inspect the DB. You can directly browse the dbu or use a mongodb playground to run e.g.:
 
 ```js
 /* global use, db */
@@ -94,7 +95,11 @@ $ npm run serve
 
 Open your browser and navigate to `http://localhost:3000`. Follow the login link and login with the username `admin` and the password `admin`. 
 
-You can now create a new page of type "Counter Apps Page". Choose a title, publish and navigate to the page. Edit the page and add the "Vue Counter App", "React Counter App", and "Svelte Counter App" widgets to the main area. The counter apps will "remember" their state (until the application is restarted) even if you navigate away from the page or reload it. You can add multiple instances of the same widget to the page and they will work independently.
+Hit Edit on the home page and add a any number of "Counter React Widget", "Counter Vue Widget", and "Counter Svelte Widget" widgets. After publishing (Update then Preview), you will see the counter apps in action.
+
+You can also create a new page of type "Counter Apps Page". Choose a title, publish and navigate to the page. Edit the page and add the "Vue Counter App", "React Counter App", and "Svelte Counter App" widgets to the main area. Widgets can be shared between basically any document type.
+
+The counter apps will "remember" their state (until the application is restarted) even if you navigate away from the page or reload it. You can add multiple instances of the same widget to the page and they will work independently.
 
 The apps are not loading the counter state via HTTP requests, but are using the server-side rendered initial data.
 
@@ -124,6 +129,12 @@ The `modules/asset` module provides common features shared between all widgets a
 - provides common nunjucks filter to stringify objects for `data-*` attributes
 - a `counter` API endpoint to save the counter value per widget (with fake in-memory storage instead of a real database - all values will be "forgotten" after a server restart)
 - the React refresh runtime injection, required for React HMR with Vite
+
+### In depth Counter App explanation
+
+Let's demistify the counter apps and follow their integration step by step. There is ApostropheCMS specific context along the way, that I'll try to explain in the most simple way.
+
+TODO
 
 ## Tailwind CSS configuration steps 
 

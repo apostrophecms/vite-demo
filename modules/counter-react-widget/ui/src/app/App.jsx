@@ -13,7 +13,7 @@ function App({
 }) {
 
   // Vanilla React is a mess...
-  const [ count, setCount ] = useState(widget.counter);
+  const [ count, setCount ] = useState(widget.counter?.count || 0);
   const [ debugState, setDebugState ] = useState(false);
   const [ message, setMessage ] = useState('');
 
@@ -21,15 +21,16 @@ function App({
   const onClick = useCallback(() => {
     setMessage('');
 
-    apos.http.post('/api/v1/asset/count', {
-      body: {
-        type: widget.type,
-        id: widget._id,
-        count: count + 1
-      }
-    })
+    apos.http
+      .post('/api/v1/counter/count', {
+        body: {
+          type: widget.type,
+          id: widget._id,
+          count: count + 1
+        }
+      })
       .then(console.log)
-      .catch((err) => setMessage(err.message));
+      .catch((err) => setMessage(err.body?.data?.message || 'Server Error'));
 
     setCount((count) => count + 1);
   }, [ count ]);

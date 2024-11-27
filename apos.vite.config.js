@@ -10,7 +10,6 @@ export default defineConfig({
   plugins: [
     // See ./modules/vite-react/index.js for ReactJS integration via module
     // `build` configuration.
-    // react(),
     vue(),
     svelte({
       // We need to tell Svelte where to find the config file,

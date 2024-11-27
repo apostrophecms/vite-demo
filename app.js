@@ -45,6 +45,8 @@ apostrophe({
     // All other frameworks are configured in the `apos.vite.config.js` file.
     'vite-react': {},
 
+    // module for counter apps backend logic
+    counter: {},
     // The page for all counter app widgets. It also takes care of injecting the
     // framework specific HMR code.
     'counter-page': {},
