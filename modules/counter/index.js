@@ -3,6 +3,41 @@ export default {
     // Create a custom mongodb collection to store counter data
     self.db = await self.apos.db.collection('counterData');
     await self.db.createIndex({ type: 1 });
+
+    // A nunjucks filter to convert an object to a `data-*` attribute value
+    self.apos.template.addFilter({
+      toAttributeValue: self.toAttributeValue
+    });
+  },
+
+  // Define server side async components
+  components(self) {
+    return {
+      // This component is generating the markup used for mounting every counter
+      // app. It also serializes the data to be used in the client-side app and
+      // assigns it to the `data-` attributes of the root element.
+      // The client side code then reads and deserializes this data and
+      // sends it to the respective `App.xxx` component via `props`.
+      // See the component template `./views/counterApp.html`.
+      // The component accespts the following arguments:
+      // - framework: The framework used in the app
+      // - widget: The current widget data object
+      // - page: The current page data object
+      // - options: The widget options as defined in the current page schema
+      async counterApp(req, {
+        framework, widget, page, options
+      }) {
+        const counter = (await self.apos.modules.counter
+          .getWidgetCounter(widget._id)) ?? {};
+        return {
+          framework,
+          widget,
+          page,
+          options,
+          counter
+        };
+      }
+    };
   },
   methods(self) {
     return {
@@ -10,6 +45,16 @@ export default {
       // See `modules/asset/index.js`
       async getWidgetCounter(id) {
         return self.db.findOne({ _id: id });
+      },
+      // A helper to convert an object to an HTML element attribute
+      toAttributeValue(obj) {
+        if (typeof obj === 'undefined' || obj === null) {
+          obj = '';
+        }
+        const json = JSON.stringify(obj);
+        return self.apos.template.safe(
+          self.apos.util.escapeHtml(json, { single: true })
+        );
       }
     };
   },
@@ -17,7 +62,9 @@ export default {
     return {
       post: {
         // A custom API route to update the counter data per widget.
-        // POST /api/v1/counter-page/count
+        // The route path is automatically prefixed with `/api/v1/`,
+        // the module name and the lowercase, slugified method name.
+        // POST /api/v1/counter/count
         async count(req) {
           const {
             count, id, type

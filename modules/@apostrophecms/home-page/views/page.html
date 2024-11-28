@@ -8,13 +8,13 @@
 {% block main %}
   <section class="bp-welcome">
     <h1 class="bp-welcome__headline">
-      Welcome to Apostrophe 3
+      Vite Demo
     </h1>
     <div class="text-center">
       <span
         class="box-decoration-clone bg-gradient-to-r from-indigo-600 to-pink-500 text-white px-2 leading-3"
       >
-        Hello World <br />
+        Hello World 
         From Tailwind CSS
       </span>
     </div>
@@ -35,12 +35,13 @@
       </p>
     {% endif %}
     <p>
-      For a guide on how to configure and customize this project, <a href="https://a3.docs.apostrophecms.com/">please check out the Apostrophe 3 documentation</a>.
+      For a guide on how to configure and customize this project, <a href="https://a3.docs.apostrophecms.com/">please check out the Apostrophe documentation</a>.
     </p>
     <div class="bp-welcome__area">
       {% if data.user %}
         {# Message only for logged in users. #}
-        {% if not data.query['apos-edit'] %}
+        {{ apos.log(data.query) }}
+        {% if not data.query['aposEdit'] %}
           <p>
             Enter <span class="bp-mode">Edit</span> mode from the admin bar <span style="display:inline-block; transform: rotate(45deg)">👆</span> to begin.
           </p>

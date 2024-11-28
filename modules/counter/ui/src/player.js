@@ -1,3 +1,8 @@
+/**
+ *
+ * @param {HTMLElement} el
+ * @returns {{id: string, editMode: string, widget: object, options: object}}
+ */
 export function parse(el) {
   if (!el) {
     return {};

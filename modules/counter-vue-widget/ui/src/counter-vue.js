@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { parse } from '@/asset/src/player';
+import { parse } from '@/counter/src/player';
 import App from './app/App.vue';
 
 // Environments are available here (`import.meta.env.PROD`, `import.meta.env.DEV`, etc.)

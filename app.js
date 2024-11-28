@@ -29,27 +29,25 @@ apostrophe({
         className: 'bp-video-widget'
       }
     },
-    // use vite for asset bundling and HMR in development
-    '@apostrophecms/vite': {},
-    // The project's first custom page type.
-    'default-page': {},
-
-    // `asset` supports the project's build for client-side assets.
-    // Adds a filter to the Nunjucks template engine for converting objects to
-    // HTML attribute strings and an API route for storing counter apps.
-    // Alias (nunjucks): `app`
+    // The starter kit base styles. Integrates Tailwind CSS for the
+    // purpose of this demo. Adds the global counter apps styles as seen
+    // in the default `vite create` template.
     asset: {},
+    // use vite for asset bundling and HMR in development.
+    '@apostrophecms/vite': {},
 
     // `vite-react` adds React support to the project's Vite configuration.
     // Also adds the React Refresh runtime to the head of the page in HMR mode.
     // All other frameworks are configured in the `apos.vite.config.js` file.
     'vite-react': {},
 
-    // module for counter apps backend logic
+    // module delivering counter apps backend features (route, templates, etc.)
     counter: {},
-    // The page for all counter app widgets. It also takes care of injecting the
-    // framework specific HMR code.
+
+    // The page containing the counter apps as widgets. Widgets are also
+    // available (shared with) in the Home page (@apostrophecms/home-page).
     'counter-page': {},
+
     // The counter app widgets
     'counter-react-widget': {},
     'counter-svelte-widget': {},

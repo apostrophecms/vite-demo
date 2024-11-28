@@ -1,4 +1,5 @@
 import { mount } from 'svelte';
+import { parse } from '@/counter/src/player';
 import App from './app/App.svelte';
 
 // Environments are available here (`import.meta.env.PROD`, `import.meta.env.DEV`, etc.)
@@ -24,7 +25,7 @@ function player(el) {
     id,
     widget,
     options
-  } = apos.util.parsePlayerData(el);
+  } = parse(el);
 
   // 3. Mount and render the app
   mount(App, {

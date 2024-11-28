@@ -42,13 +42,13 @@ export default {
             '@apostrophecms/image': {},
             '@apostrophecms/video': {},
             'counter-vue': {
-              example: 'options from the page schema'
+              example: 'options from the home page schema'
             },
             'counter-svelte': {
-              example: 'options from the page schema'
+              example: 'options from the home page schema'
             },
             'counter-react': {
-              example: 'options from the page schema'
+              example: 'options from the home page schema'
             }
           }
         }

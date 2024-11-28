@@ -10,13 +10,13 @@ export default {
         options: {
           widgets: {
             'counter-vue': {
-              example: 'options from the page schema'
+              example: 'options from the counter-page schema'
             },
             'counter-svelte': {
-              example: 'options from the page schema'
+              example: 'options from the counter-page schema'
             },
             'counter-react': {
-              example: 'options from the page schema'
+              example: 'options from the counter-page schema'
             }
           }
         }

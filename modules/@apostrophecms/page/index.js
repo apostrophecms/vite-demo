@@ -9,10 +9,6 @@ export default {
         label: 'Counter Apps Page'
       },
       {
-        name: 'default-page',
-        label: 'Default'
-      },
-      {
         name: '@apostrophecms/home-page',
         label: 'Home'
       }

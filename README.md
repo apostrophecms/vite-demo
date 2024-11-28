@@ -7,15 +7,20 @@ This is a demo project that showcases advanced features of ApostropheCMS and Vit
   - [Local installation](#local-installation)
 - [The demo](#the-demo)
 - [The frameworks setup](#the-frameworks-setup)
-- [Counter apps as widgets](#counter-apps-as-widgets)
-  - [In depth Counter App explanation](#in-depth-counter-app-explanation)
+- ["Smarter" Counter apps as widgets](#smarter-counter-apps-as-widgets)
+  - [In depth setup explanation](#in-depth-setup-explanation)
+    - [`modules/asset`](#modulesasset)
+    - [`modules/counter`](#modulescounter)
+    - [`modules/counter-page`](#modulescounter-page)
+    - [`modules/@apostrophecms/home-page`](#modulesapostrophecmshome-page)
+    - [`modules/counter-{vue|svelte|react}-widget`](#modulescounter-vuesveltereact-widget)
 - [Tailwind CSS configuration steps](#tailwind-css-configuration-steps)
 - [How it works (for nerds)](#how-it-works-for-nerds)
   - [Sources discovery](#sources-discovery)
   - [Sources aggregation](#sources-aggregation)
   - [Synthetic entrypoints](#synthetic-entrypoints)
   - [Build pipelines](#build-pipelines)
-- [Dev Server \& HMR](#dev-server--hmr)
+  - [Dev Server \& HMR](#dev-server--hmr)
 - [The known problems and limitations](#the-known-problems-and-limitations)
 
 
@@ -107,34 +112,59 @@ Open your favourite editor and navigate to the `ui/src` directories of the `coun
 
 ## The frameworks setup
 
-All frameworks except ReactJS are integrated via single project level `apos.vite.config.mjs` file. Any additional configuration files are also supported (e.g. Svelte's `svelte.config.js`).
+All frameworks except ReactJS are integrated via single project level `apos.vite.config.mjs` file. Any additional configuration files are also supported (e.g. `svelte.config.js`, `postcss.config.js`, etc).
 
-For demonstration purposes, ReactJS is configured via its own project module `vite-react`, using the supported by Apostrophe Vite `build.vite` module configuration. The module also injects the React refresh runtime required for React HMR, using the new conditional injection feature.
+For demonstration purposes (and because by default it requires additional page injection), ReactJS is configured via its own project module `vite-react`, using the supported by Apostrophe Vite `build.vite` module configuration. The module also injects the React refresh runtime required for React HMR, using the new conditional injection feature.
 
 Tailwind CSS is integrated site-wide and can be used in both front-end and back-end (nunjucks) code. The configuration steps used while creating the demo are described below.
 
-## Counter apps as widgets
+## "Smarter" Counter apps as widgets
 
 The default template when creating Vite app for React, Vue, or Svelte is a counter app. In this demo those are ported to ApostropheCMS widgets: `counter-react-widget`, `counter-vue-widget`, and `counter-svelte-widget` respectively. The respective UI code can be found in `ui/src` directories of these modules. Every widget has its own bundle, which is loaded only when the widget is present on the page (and no user is logged in).
 
 The widgets are registering [widget players](https://docs.apostrophecms.org/guide/custom-widgets.html#client-side-javascript-for-widgets) as a standard approach in ApostropheCMS. This ensures that our apps will be re-mounted when the page is reloaded, but also when widget configuration changes.
 
-Additionally, the default counter apps are enhanced to get initial data (props) from the server and communicate their state back to the server.
+Additionally, the default counter apps are enhanced to get initial data (props) from the server and save their state back to the server.
 
-A page module `modules/counter-page` is created to demonstrate the usage of these widgets. It has an area `main` where the widgets are registered. 
+The Counter Apps are made available in the Home page widget area.
 
-The `modules/asset` module provides common features shared between all widgets and some framework specific integrations:
-- a common CSS file to style the original counter app in a similar to the original style
-- integrates `tailwindcss` for styling (for demonstration purposes, see the configuration steps below)
-- provides common nunjucks filter to stringify objects for `data-*` attributes
-- a `counter` API endpoint to save the counter value per widget (with fake in-memory storage instead of a real database - all values will be "forgotten" after a server restart)
-- the React refresh runtime injection, required for React HMR with Vite
+A page module `modules/counter-page` is created to demonstrate sharing these widgets between different document types. It has an area `main` where the widgets are registered. 
 
-### In depth Counter App explanation
+### In depth setup explanation
 
 Let's demistify the counter apps and follow their integration step by step. There is ApostropheCMS specific context along the way, that I'll try to explain in the most simple way.
 
-TODO
+#### `modules/asset`
+
+The module is inherited by the original Starter Kit Essentials repository. It provides the original CSS used in the starter kit. For the purposes of this demo, we added the Tailwind CSS entrypoint (see `ui/src/index.js`) and a common `svg` asset files (`ui/svg`) referenced by the Counter App UI components.
+
+#### `modules/counter`
+
+This module contributes the back-end logic required to save the counter value per App Counter widget (on counter button click). The module provides: 
+- A simple API endpoint to save the counter value in the MongoDB database per widget instance.
+- A method to get the counter value per widget instance, used in the async server component to pass that value as a prop to the front-end app.
+- Nunjucks helpers and component to serialize server-side data and send it to the front-end app via `data-*` attributes.
+
+#### `modules/counter-page`
+
+A simple Apostrophe page that provides a widget area containing only the Counter App widgets. Demonstrates sending `options` defined within the schema to the front-end app (can be seen in the "Show Debug" toggle).
+
+#### `modules/@apostrophecms/home-page`
+
+It `improves` the Apostrophe core Home page module. It's originally used by the Starter Kit to provide a styled home page. In this demo, we are adding the Counter App widgets to the widget area, alongside with the existing Rich Text, Image, and Video widgets.
+
+#### `modules/counter-{vue|svelte|react}-widget`
+
+`counter-vue-widget`, `counter-svelte-widget`, and `counter-react-widget` are the Counter App widgets. They use identical setup, with the only difference being the front-end framework used (`App.vue`, `App.svelte`, and `App.jsx` respectively). The widgets are registering a widget player that mounts the front-end app on the page. No initial HTTP requests for the counter value are made, the initial data is passed from the server to the front-end app via `data-*` attributes. On every counter button click, the counter value is saved to the server. After refreshing the page, the counter server value is used as the initial value for the counter app. 
+
+**Be careful**, the counter back-end doesn't like the number `9` for some reason! However, the UI apps are smart enough to handle server errors and display a message to the user.
+
+Let's look at the `counter-vue-widget` as an example:
+
+- `index.js` - The module definition. It adds a single schema field `title` to the widget. You can [extend the schema with additional fields](https://docs.apostrophecms.org/reference/field-types/). The widget data is sent to `App.vue` as the `widget` prop. There is also `build.vite.bundles` configuration that tells ApostropheCMS to bundle the UI source of this widget separately and load it only when the widget is present on the page (if an editor is logged in, all bundles are loaded). The UI entrypoint becomes the bundle name `ui/src/counter-vue.js` instead the default `ui/src/index.js`.
+- `views/widget.html` - The widget template. It invokes the introduced in `modules/counter` nunjucks server component `counterApp` to generate the markup for the widget.
+- `ui/src/counter-vue.js` - The entrypoint for the widget UI. Every module UI entrypoint should have a default export function that acts as "application" bootstrap. In this case, the entrypoint registers a [Widget Player](https://docs.apostrophecms.org/guide/custom-widgets.html#client-side-javascript-for-widgets) (a selector and handling function) that mounts the Vue app on the page and passing server data as props.
+- `ui/src/app/App.vue` - The Vue Counter app. It receives the `widget` prop with the initial data from the server. The app has a single `counter` state that is updated on the button click. The counter value is saved to the server on every button click. The app is using the `svg` assets provided by the `modules/asset` module. The "Show Debug" toggle shows the component props received from the server.
 
 ## Tailwind CSS configuration steps 
 
@@ -167,7 +197,7 @@ module.exports = {
   plugins: [],
 }
 ```
-Edit `apos.vite.config.mjs` to exclude the nunjucks templates from triggering page reloads:
+Edit `apos.vite.config.js` to exclude the nunjucks templates from triggering page reloads:
 ```js
   // ...
   server: {
@@ -200,8 +230,7 @@ import './tailwind.css'
 ```html
     <div class="text-center">
       <span class="box-decoration-clone bg-gradient-to-r from-indigo-600 to-pink-500 text-white px-2 leading-3">
-        Hello World <br />
-        From Tailwind CSS
+        Hello World From Tailwind CSS
       </span>
     </div>
 ```
@@ -254,7 +283,7 @@ Historically, ApostropheCMS builds `apos` (admin UI) and `public` (site UI) code
 
 Keep in mind that the `apos` bundle is loaded on a page only when editor is logged in, so the performance impact is not that big issue.
 
-## Dev Server & HMR
+### Dev Server & HMR
 
 As a consequence of the above, the dev server (Vite middleware) can run in only "one mode" - `public` or `apos` (Apostrophe `asset` module configuration). While not ideal, this was a good compromise that allows us to have a fast and reliable development experience.
 
@@ -262,7 +291,7 @@ The Vite module is reusing (in-memory) the same metadata used for copying source
 
 ## The known problems and limitations
 
-- The `apos` HMR is not working when the `public` build contains Vue apps. The reason for that lies in the fact that the `apos` and `public` builds can't share the same Vue instance. As a result of that, HMR is available to the "first" Vue instance that is loaded on the page. There are some ideas that we are exploring to solve this problem, but all of those would require high-effort changes.
+- The `apos` HMR is not working when the `public` build contains Vue apps. The reason for that lies in the fact that the `apos` and `public` builds can't share the same Vue instance. As a result of that, HMR is available to the "first" Vue instance that is loaded on the page. There are some ideas that we are exploring to solve this problem.
 - No SSR yet. UI Apps can receive initial data from the server, but the real server-side rendering (render on the server per framework, mount and hydrate on the client) is yet to be planned and implemented.
-- Following alias imports (`@/path/to/file`) in an editor will lead to the `apos-build` directory, not the original source. This is confusing and far from a good DX. We are exploring ways to solve this problem (hint - symlinks).
+- Following alias imports (`@/path/to/file`) in an editor will lead to the `apos-build` directory, not the original source. This is confusing and far from a good DX. We are exploring ways to solve this problem for all editors that support Typescript configuration files.
 

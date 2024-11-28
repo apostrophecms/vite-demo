@@ -1,8 +1,10 @@
-{# 
+{#
   Send the data to the counterApp component and let it render the markup.
   `options` is the object defined in the area schema. 
- #}
-{% component 'asset:counterApp' with {  
+  Use a generic `counterApp` component to render the markup.
+  See `modules/counter/views/counterApp.html`
+ #} 
+{% component 'counter:counterApp' with {  
   framework: "vue",
   widget: data.widget, 
   page: data.page,

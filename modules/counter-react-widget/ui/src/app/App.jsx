@@ -5,7 +5,8 @@ import {
 } from 'react';
 /* eslint-enable no-unused-vars */
 
-// We can import images directly in React components
+// Assets
+import viteLogo from '@/asset/svg/vite.svg';
 import reactLogo from './assets/react.svg';
 
 function App({
@@ -58,17 +59,17 @@ function App({
       <div className='py-8'>
         <div className='flex justify-center content-center'>
           <a href="https://vite.dev" target="_blank" rel="noreferrer">
-            {/* We can use public images as we did */}
-            <img src={`${apos.assetBaseUrl}/modules/asset/vite.svg`} className="logo" alt="Vite Logo" />
+            {/* Use imported svg from another module */}
+            <img src={viteLogo} className="logo" alt="Vite Logo" />
           </a>
           <a href="https://react.dev" target="_blank">
-            {/* ...or inline */}
+            {/* ...or from the same module */}
             <img src={reactLogo} className="logo react" alt="React logo" />
           </a>
         </div>
 
         {/* Title from the widget data */}
-        <h1>{title}</h1>
+        <h2 class="text-5xl">{title}</h2>
 
         {/* A server error message will appear here */}
         {message && <p className="mt-4 p-4 bg-red-400">[Server Message] {message}</p>}
