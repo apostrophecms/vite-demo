@@ -7,19 +7,18 @@ const { id, options, widget } = defineProps({
   options: Object
 });
 
-const count = ref(widget.counter);
+const count = ref(widget.counter.count || 0);
 const message = ref('');
 const debugState = ref(false);
 const debugLabel = computed(() => `${debugState.value ? 'Hide' : 'Show'} Debug`);
 const debug = JSON.stringify({ id, widget, options }, null, 2);
-const baseUrl = computed(() => window.apos.assetBaseUrl);
 
 const onClick = () => {
   message.value = "";
   count.value += 1;
 
   apos.http
-    .post("/api/v1/asset/count", {
+    .post("/api/v1/counter/count", {
       body: {
         type: widget.type,
         id: widget._id,
@@ -27,30 +26,29 @@ const onClick = () => {
       },
     })
     .then(console.log)
-    .catch((err) => (message.value = err.message));
+    .catch((err) => (message.value = err.body?.data?.message || 'Server Error'));
 };
 
 const onDebugClick = () => {
   debugState.value = !debugState.value;
 };
-
 </script>
 
 <template>
   <div class="py-8">
     <div class="flex justify-center content-center">
       <a href="https://vite.dev" target="_blank" rel="noreferrer">
-        <!-- We can use public images as we did -->
-        <img :src="`${baseUrl}/modules/asset/vite.svg`" class="logo" alt="Vite Logo" />
+        <!-- Use the alias and point to modules/asset/ui/svg/vite.svg -->
+        <img src="`@/asset/svg/vite.svg`" class="logo" alt="Vite Logo" />
       </a>
       <a href="https://vuejs.org/" target="_blank" rel="noreferrer">
-        <!-- ...or a relative path -->
+        <!-- ...or a relative path to the same module -->
         <img src="./assets/vue.svg" class="logo vue" alt="Vue Logo" />
       </a>
     </div>
 
     <!-- Title from the widget data  -->
-    <h1>{{ widget.title }}</h1>
+    <h2 class="text-5xl">{{ widget.title }}</h2>
 
     <!-- A server error message will appear here -->
     <p v-if="message" class="mt-4 p-4 bg-red-400">[Server Message] {{ message }}</p>

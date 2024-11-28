@@ -53,6 +53,7 @@ export default {
   },
   components(self) {
     return {
+      // Our async server component, see `./views/reactRefresh.html`.
       reactRefresh(req, data) {
         return {};
       }

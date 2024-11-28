@@ -1,8 +1,9 @@
 <script>
+  import viteLogo from "@/asset/svg/vite.svg";
   import svelteLogo from "./assets/svelte.svg";
 
   let { id, widget, options } = $props();
-  let count = $state(widget.counter);
+  let count = $state(widget.counter?.count || 0);
   let message = $state("");
   let debugState = $state(false);
   let debugLabel = $state("Show Debug");
@@ -14,15 +15,15 @@
     count += 1;
 
     apos.http
-      .post("/api/v1/asset/count", {
+      .post("/api/v1/counter/count", {
         body: {
           type: widget.type,
           id: widget._id,
-          count,
+          count: count,
         },
       })
       .then(console.log)
-      .catch((err) => (message = err.message));
+      .catch((err) => (message = err.body?.data?.message || "Server Error"));
   };
 
   const onDebugClick = () => {
@@ -34,12 +35,8 @@
 <div class="py-8">
   <div class="flex justify-center content-center">
     <a href="https://vite.dev" target="_blank" rel="noreferrer">
-      <!-- We can use public images as we did -->
-      <img
-        src={`${window.apos.assetBaseUrl}/modules/asset/vite.svg`}
-        class="logo"
-        alt="Vite Logo"
-      />
+      <!-- Use imported svg from another module -->
+      <img src={viteLogo} class="logo" alt="Vite Logo" />
     </a>
     <a href="https://svelte.dev" target="_blank" rel="noreferrer">
       <!-- ...or inline -->
@@ -48,7 +45,7 @@
   </div>
 
   <!-- Title from the widget data  -->
-  <h1>{widget.title}</h1>
+  <h2 class="text-5xl">{widget.title}</h2>
 
   <!-- A server error message will appear here -->
   {#if message}
