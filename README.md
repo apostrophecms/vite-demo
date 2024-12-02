@@ -100,7 +100,7 @@ $ npm run serve
 
 Open your browser and navigate to `http://localhost:3000`. Follow the login link and login with the username `admin` and the password `admin`. 
 
-Hit Edit on the home page and add a any number of "Counter React Widget", "Counter Vue Widget", and "Counter Svelte Widget" widgets. After publishing (Update then Preview), you will see the counter apps in action.
+Hit Edit on the home page and add any desired number of "Vue Counter App", "Svelte Counter App", and "React Counter App" widgets by clicking on the "Add Content" button. After publishing (Update then Preview), you will see the counter apps in action.
 
 You can also create a new page of type "Counter Apps Page". Choose a title, publish and navigate to the page. Edit the page and add the "Vue Counter App", "React Counter App", and "Svelte Counter App" widgets to the main area. Widgets can be shared between basically any document type.
 
@@ -108,7 +108,7 @@ The counter apps will "remember" their state (until the application is restarted
 
 The apps are not loading the counter state via HTTP requests, but are using the server-side rendered initial data.
 
-Open your favourite editor and navigate to the `ui/src` directories of the `counter-react-widget`, `counter-vue-widget`, and `counter-svelte-widget` modules. You can modify the counter apps (`App.vue`, `App.svelte` and `App.jsx`) and see the changes reflected in the browser without a full page reload (HMR).
+Open your favourite editor and navigate to the  `ui/src/app` directories of the `counter-react-widget`, `counter-vue-widget`, and `counter-svelte-widget` modules. You can modify the counter apps (`App.vue`, `App.svelte` and `App.jsx`) and see the changes reflected in the browser without a full page reload (HMR).
 
 ## The frameworks setup
 
@@ -132,11 +132,11 @@ A page module `modules/counter-page` is created to demonstrate sharing these wid
 
 ### In depth setup explanation
 
-Let's demistify the counter apps and follow their integration step by step. There is ApostropheCMS specific context along the way, that I'll try to explain in the most simple way.
+Let's demystify the counter apps and follow their integration step by step. There is ApostropheCMS specific context along the way, that I'll try to explain in the most simple way.
 
 #### `modules/asset`
 
-The module is inherited by the original Starter Kit Essentials repository. It provides the original CSS used in the starter kit. For the purposes of this demo, we added the Tailwind CSS entrypoint (see `ui/src/index.js`) and a common `svg` asset files (`ui/svg`) referenced by the Counter App UI components.
+The module is inherited from the original Starter Kit Essentials repository. It provides the original CSS used in the starter kit. For the purposes of this demo, we added the Tailwind CSS entrypoint (see `ui/src/index.js`) and a common `svg` asset files (`ui/svg`) referenced by the Counter App UI components.
 
 #### `modules/counter`
 
@@ -161,16 +161,16 @@ It `improves` the Apostrophe core Home page module. It's originally used by the 
 
 Let's look at the `counter-vue-widget` as an example:
 
-- `index.js` - The module definition. It adds a single schema field `title` to the widget. You can [extend the schema with additional fields](https://docs.apostrophecms.org/reference/field-types/). The widget data is sent to `App.vue` as the `widget` prop. There is also `build.vite.bundles` configuration that tells ApostropheCMS to bundle the UI source of this widget separately and load it only when the widget is present on the page (if an editor is logged in, all bundles are loaded). The UI entrypoint becomes the bundle name `ui/src/counter-vue.js` instead the default `ui/src/index.js`.
-- `views/widget.html` - The widget template. It invokes the introduced in `modules/counter` nunjucks server component `counterApp` to generate the markup for the widget.
-- `ui/src/counter-vue.js` - The entrypoint for the widget UI. Every module UI entrypoint should have a default export function that acts as "application" bootstrap. In this case, the entrypoint registers a [Widget Player](https://docs.apostrophecms.org/guide/custom-widgets.html#client-side-javascript-for-widgets) (a selector and handling function) that mounts the Vue app on the page and passing server data as props.
+- `index.js` - The module definition. It adds a single schema field `title` to the widget. You can [extend the schema with additional fields](https://docs.apostrophecms.org/reference/field-types/). The widget data is sent to `App.vue` as the `widget` prop. There is also `build.vite.bundles` configuration that tells ApostropheCMS to bundle the UI source of this widget separately and load it only when the widget is present on the page (if an editor is logged in, all bundles are loaded). The UI entrypoint becomes the bundle name `ui/src/counter-vue.js` instead of the default `ui/src/index.js`.
+- `views/widget.html` - The widget template. It invokes the Nunjucks server component `counterApp` created in `modules/counter` to generate the markup for the widget.
+- `ui/src/counter-vue.js` - The entrypoint for the widget UI. Every module UI entrypoint should have a default export function that acts as an "application" bootstrap. In this case, the entrypoint registers a [Widget Player](https://docs.apostrophecms.org/guide/custom-widgets.html#client-side-javascript-for-widgets) (a selector and handling function) that mounts the Vue app on the page and passing server data as props.
 - `ui/src/app/App.vue` - The Vue Counter app. It receives the `widget` prop with the initial data from the server. The app has a single `counter` state that is updated on the button click. The counter value is saved to the server on every button click. The app is using the `svg` assets provided by the `modules/asset` module. The "Show Debug" toggle shows the component props received from the server.
 
 ## Tailwind CSS configuration steps 
 
 The following steps were performed to integrate Tailwind CSS with ApostropheCMS, following the official guide: https://tailwindcss.com/docs/guides/vite
 
-It's not needed to follow these steps to use the demo. They are provided as a reference for those who want to integrate Tailwind CSS with ApostropheCMS.
+It's not necessary to follow these steps to use the demo. They are provided as a reference for those who want to integrate Tailwind CSS with ApostropheCMS.
 
 1. Install Tailwind CSS (we skip `postcss` because it's internally managed by `vite`):
 ```bash
@@ -241,19 +241,19 @@ Tailwind now works for both server-side and client-side rendering (HMR included)
 
 ## How it works (for nerds)
 
-The demo uses our brand new `@apostrophecms/vite` module to integrate Vite with ApostropheCMS. In order for us to achieve that, we developed a brand new system in the core to support "external build tools" and went from hardcoded page script injection to a manifest-based approach. Additionally, we added abstract public API to the core, that simplifies source discovery and synthetic entrypoints, so that build tools can concentrate on bundle vendor specific logic. This architecture allows us to support multiple build tools and configurations in the future, if the need for that arises.
+The demo uses our brand new `@apostrophecms/vite` module to integrate Vite with ApostropheCMS. In order for us to achieve that, we developed a brand new system in the core to support "external build tools" and went from hardcoded page script injection to a manifest-based approach. Additionally, we added an abstract public API to the core, that simplifies source discovery and synthetic entrypoints, so that build tools can concentrate on bundle vendor specific logic. This architecture allows us to support multiple build tools and configurations in the future, if the need for that arises.
 
 The internal Apostrophe Webpack build is still fully supported, using the legacy build system. 
 
 ### Sources discovery
 
-ApostropheCMS if fully "module-based" platform. Every piece of code is contributed by an Apostrophe module - both front and server side. Modules can be `npm` packages or local directories. Local modules live in `./modules` directory of the project. Local modules can also extend or improve other modules, including npm and ApostropheCMS core modules.
+ApostropheCMS is a fully "module-based" platform. Every piece of code is contributed by an Apostrophe module - both front and server side. Modules can be `npm` packages or local directories. Local modules live in `./modules` directory of the project. Local modules can also extend or improve other modules, including npm and ApostropheCMS core modules.
 
 Every module can contribute to the front-end code. The front-end code is located in the `ui/` directory of the module. A module can also extend the Apostrophe admin UI, by providing/overriding additional Vue components, CSS, or JavaScript code. 
 
 There is a clear distinction between "public" and "admin" UI code. We call them `public` and `apos` builds respectively. We are building those in separate pipelines, with separate configurations, and we are serving the code from separate directories. The project can only configure the `public` build, the `apos` build is managed entirely internally.
 
-The entrypoints for the `public` build are discovered by scanning the `ui/src` directories of all registered in `app.js` modules. The default entrypoint is `ui/src/index.js`, but modules can also define `bundles` in their configuration (which is done in this demo) that results in `ui/src/[bundle-name].js` being used as an entrypoint. Additionally, bundles are only loaded when the module that defines them is present on the page (or if user is logged in).
+The entrypoints for the `public` build are discovered by scanning the `ui/src` directories of all modules registered in `app.js`. The default entrypoint is `ui/src/index.js`, but modules can also define `bundles` in their configuration (which is done in this demo) that results in `ui/src/[bundle-name].js` being used as an entrypoint. Additionally, bundles are only loaded when the module that defines them is present on the page (or if a user is logged in).
 
  Every entrypoint should have a default export function that acts as "application" bootstrap - it's internally called by ApostropheCMS when the page is loaded.
 
@@ -261,19 +261,19 @@ The `apos` build sources are scanned in a similar way, but in `ui/apos` director
 
 ### Sources aggregation
 
-It's impractical to build/watch sources scattered across multiple directory trees, including inside `node_modules/`. Furthermore, smart bundlers are optimizing sources located in `node_modules/` and doesn't allow HMR for them - something that we don't want in some cases. Keep in mind that Apostrophe admin UI is also not pre-built, the entire UI is built in and for the project, so that any module can modify it.
+It's impractical to build/watch sources scattered across multiple directory trees, including inside `node_modules/`. Furthermore, smart bundlers are optimizing sources located in `node_modules/` and doesn't allow HMR for them - something that we don't want in some cases. Keep in mind that the Apostrophe admin UI is also not pre-built, the entire UI is built in and for the project, so that any module can modify it.
 
-We are aggregating all sources into a single directory tree, that is then used by Vite to build the final bundles. This is done by computing something we call `build metadata` that contains every file considered an UI `source` and its relation to an Apostrophe module. This opens a lot of awesome possibilities, but also (there is no free lunch) introduces unique (fun) problems to solve.
+We are aggregating all sources into a single directory tree, that is then used by Vite to build the final bundles. This is done by computing something we call `build metadata` that contains every file considered a UI `source` and its relation to an Apostrophe module. This opens a lot of awesome possibilities, but also (there is no free lunch) introduces unique (fun) problems to solve.
 
-All sources are copied to `./apos-build` directory of the project. To be more precise - `./apos-build/@apostrophecms/vite/default/src` is the exact location, where that same path excluding the `src` folder is the build (Vite) root. The namespacing is required to avoid conflicts between different build tools (in the future) and configurations (configured project namespace, Apostrophe Assembly multisite just to name a few). When copying the sources, we are preserving the original directory structure by only "skipping" the `ui/` part of the path. This way building the sources becomes a trivial task for Vite. The "smart copy" is also handling (in an extremely efficient way) sources overrides as a result of module inheritance (extend/improve).
+All sources are copied to `./apos-build` directory of the project. To be more precise - `./apos-build/@apostrophecms/vite/default/src` is the exact location, where that same path excluding the `src` folder is the build (Vite) root. The namespacing is required to avoid conflicts between different build tools (in the future) and configurations (configured project namespace, Apostrophe Assembly multisite just to name a few). When copying the sources, we are preserving the original directory structure by only "skipping" the `ui/` part of the path. This way building the sources becomes a trivial task for Vite. The "smart copy" is also handling (in an extremely efficient way) source overrides as a result of module inheritance (extend/improve).
 
-We can also easily support editor autocompletion and other goodies, by introducing an universal alias `@/` that points to the `./apos-build/@apostrophecms/vite/default/src` directory and configure it in `jsconfig.json` or `tsconfig.json` of the project (to make editors happy). 
+We can also easily support editor autocompletion and other goodies, by introducing a universal alias `@/` that points to the `./apos-build/@apostrophecms/vite/default/src` directory and configure it in `jsconfig.json` or `tsconfig.json` of the project (to make editors happy). 
 
 ### Synthetic entrypoints
 
 The `build metadata` is used to generate synthetic entrypoints for Vite. They are internally registered as `build.rollupOptions.input` in the Vite configuration. 
 
-For `public` builds, every `input` is auto-generated `[input-name].js` file that imports previosly discovered module sources. All `ui/src/index.js` apps are imported and executed in a single `input`, while every configured `bundle` is imported and executed in a separate `input`. The import paths are relative to the `./apos-build/@apostrophecms/vite/default/src` directory. 
+For `public` builds, every `input` is an auto-generated `[input-name].js` file that imports previously discovered module sources. All `ui/src/index.js` apps are imported and executed in a single `input`, while every configured `bundle` is imported and executed in a separate `input`. The import paths are relative to the `./apos-build/@apostrophecms/vite/default/src` directory. 
 
 The `apos` build contains a single auto-generated `input` that handles everything, from component registration, 3rd party modules integration to admin UI specific `apps`.
 
@@ -281,7 +281,7 @@ The `apos` build contains a single auto-generated `input` that handles everythin
 
 Historically, ApostropheCMS builds `apos` (admin UI) and `public` (site UI) code in separate pipelines. There is a good reason for that - we don't want the admin UI to interfere with the project UI and vice versa. The same problem exists with the Vite integration. We made an attempt to build everything in a single pipeline, but it was a disaster. The main problem comes from configration that can't be shared between the two builds, mostly Sass and PostCSS (generally CSS) configuration.
 
-Keep in mind that the `apos` bundle is loaded on a page only when editor is logged in, so the performance impact is not that big issue.
+Keep in mind that the `apos` bundle is loaded on a page only when editor is logged in, so the performance impact is not that big an issue.
 
 ### Dev Server & HMR
 
