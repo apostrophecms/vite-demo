@@ -116,7 +116,7 @@ All frameworks except ReactJS are integrated via single project level `apos.vite
 
 For demonstration purposes (and because by default it requires additional page injection), ReactJS is configured via its own project module `vite-react`. Looking inside the `index.js` file of that module, this is accomplished using the Apostrophe Vite `build.vite` configuration that can be added to any project module. The module also injects the React refresh runtime required for React HMR, using the new conditional injection feature within the `init(self)` block. You can read more about this in the [documentation](https://docs.apostrophecms.org/guide/vite.html#development-specific-features).
 
-This demo also has Tailwind CSS integrated site-wide and can be used in both front-end (Nunjucks) and back-end Admin UI code. The configuration steps used while creating the demo are described below.
+This demo also has Tailwind CSS integrated site-wide and can be used in both front-end and back-end (Nunjucks) code. The configuration steps used while creating the demo are described below.
 
 ## "Smarter" Counter apps as widgets
 
@@ -143,7 +143,7 @@ The module is inherited from the original Starter Kit Essentials repository and 
 This module contributes the back-end logic required to save the counter value per App Counter widget (on counter button click). The module provides: 
 - A simple API endpoint using the Apostrophe `apiRoutes(self)` configuration method to save the counter value in the MongoDB database per widget instance.
 - A method, `getWidgetCounter(id)`, to get the counter value per widget instance, used in the async server component to pass that value as a prop to the front-end app.
-- A Nunjucks helper filter (`toAttributeValue(obj)`) and component. The component is defined in the `counterApp()` component method and the template is located in the `views` folder. In ApostropheCMS, components act much like they do in other frameworks, allowing you to add specific functionality to any of your templates. In this case, we are serializing server-side data and sending it to the front-end app via `data-*` attributes.
+- A Nunjucks helper filter (`toAttributeValue(obj)`) and a server component. The component is defined in the `counterApp()` component method and the template is located in the `views` folder. In ApostropheCMS, components act much like they do in other frameworks, allowing you to add specific functionality to any of your templates. In this case, we are serializing server-side data and sending it to the front-end app via `data-*` attributes.
 
 #### `modules/counter-page`
 
