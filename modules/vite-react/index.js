@@ -31,11 +31,11 @@ export default {
   build: {
     vite: {
       extensions: {
-        enableRact: defineConfig({
+        enableReact: defineConfig({
           plugins: [ react() ]
         })
         // This is the same as:
-        // enableRact: {
+        // enableReact: {
         //   plugins: [ react() ]
         // }
       }
