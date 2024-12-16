@@ -40,7 +40,6 @@
     <div class="bp-welcome__area">
       {% if data.user %}
         {# Message only for logged in users. #}
-        {{ apos.log(data.query) }}
         {% if not data.query['aposEdit'] %}
           <p>
             Enter <span class="bp-mode">Edit</span> mode from the admin bar <span style="display:inline-block; transform: rotate(45deg)">👆</span> to begin.
