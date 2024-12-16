@@ -1,16 +1,18 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed } from "vue";
 
 const { id, options, widget } = defineProps({
   id: String,
   widget: Object,
-  options: Object
+  options: Object,
 });
 
 const count = ref(widget.counter.count || 0);
-const message = ref('');
+const message = ref("");
 const debugState = ref(false);
-const debugLabel = computed(() => `${debugState.value ? 'Hide' : 'Show'} Debug`);
+const debugLabel = computed(
+  () => `${debugState.value ? "Hide" : "Show"} Debug`
+);
 const debug = JSON.stringify({ id, widget, options }, null, 2);
 
 const onClick = () => {
@@ -26,7 +28,9 @@ const onClick = () => {
       },
     })
     .then(console.log)
-    .catch((err) => (message.value = err.body?.data?.message || 'Server Error'));
+    .catch(
+      (err) => (message.value = err.body?.data?.message || "Server Error")
+    );
 };
 
 const onDebugClick = () => {
@@ -39,7 +43,7 @@ const onDebugClick = () => {
     <div class="flex justify-center content-center">
       <a href="https://vite.dev" target="_blank" rel="noreferrer">
         <!-- Use the alias and point to modules/asset/ui/svg/vite.svg -->
-        <img src="`@/asset/svg/vite.svg`" class="logo" alt="Vite Logo" />
+        <img src="@/asset/svg/vite.svg" class="logo" alt="Vite Logo" />
       </a>
       <a href="https://vuejs.org/" target="_blank" rel="noreferrer">
         <!-- ...or a relative path to the same module -->
@@ -51,14 +55,14 @@ const onDebugClick = () => {
     <h2 class="text-5xl">{{ widget.title }}</h2>
 
     <!-- A server error message will appear here -->
-    <p v-if="message" class="mt-4 p-4 bg-red-400">[Server Message] {{ message }}</p>
+    <p v-if="message" class="mt-4 p-4 bg-red-400">
+      [Server Message] {{ message }}
+    </p>
 
     <!-- The Button. No tailwind CSS because we grab it directly
           from the vite template installs. -->
     <div class="card">
-      <button class="cbutton" @click="onClick">
-        count is {{ count }}
-      </button>
+      <button class="cbutton" @click="onClick">count is {{ count }}</button>
     </div>
 
     <!-- A toggle for debugging - show App props (coming from the server) -->
@@ -72,3 +76,9 @@ const onDebugClick = () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
+}
+</style>

@@ -70,3 +70,9 @@
     <pre class="m-auto">{debug}</pre>
   </div>
 </div>
+
+<style>
+  .logo.svelte:hover {
+    filter: drop-shadow(0 0 2em #ff3e00aa);
+  }
+</style>

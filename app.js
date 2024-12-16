@@ -49,8 +49,8 @@ apostrophe({
     'counter-page': {},
 
     // The counter app widgets
-    'counter-react-widget': {},
+    'counter-vue-widget': {},
     'counter-svelte-widget': {},
-    'counter-vue-widget': {}
+    'counter-react-widget': {}
   }
 });
