@@ -240,6 +240,12 @@ import './tailwind.css'
 
 Tailwind now works for both server-side and client-side rendering (HMR included). The original starter kit styles are preserved.
 
+**UPDATE:** The project did switch to Tailwind v4. The migration was completely automated by running the recommended tool:
+```bash
+npx @tailwindcss/upgrade
+```
+In result of that, the configuration file `tailwind.config.js` is migrated to the `tailwind.css` file and removed, the `postcss.config.js` file and the related dependencies in `package.json` are updated. Legacy gradient classes in `home-page/views/page.html` were automatically migrated.
+
 ## How it works (for nerds)
 
 The demo uses our brand new `@apostrophecms/vite` module to integrate Vite with ApostropheCMS. In order for us to achieve that, we developed a brand new system in the core to support "external build tools" and went from hardcoded page script injection to a manifest-based approach. Additionally, we added an abstract public API to the core, that simplifies source discovery and synthetic entrypoints, so that build tools can concentrate on bundle vendor specific logic. This architecture allows us to support multiple build tools and configurations in the future, if the need for that arises.
