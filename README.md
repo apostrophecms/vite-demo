@@ -43,7 +43,7 @@ $ npm run dev
 **Only if in the web VSCode editor:**
 The easiest way to test HMR is to open the VSCode Preview (Ports tab in the bottom panel, click the Preview icon in the Forwarded Address section for port 3000). You can also open the app in your browser (VSCode will open a new tab with the preview URL) but in order to see the HMR in action you need to make port 3000 Public accessible (right click on the port number in the Ports tab and select Port Visibility -> Public).
 
-ApostropheCMS uses MongoDB to store and manage data. The container comes with pre-installed MongoDB. Although not necessary for the demo, the container also has the VSCode extension for MongoDB installed so you can inspect the DB. You can use the `mongodb://llocalhost:27017` connection string and directly browse the dbu or use a mongodb playground to run e.g.:
+ApostropheCMS uses MongoDB to store and manage data. The container comes with pre-installed MongoDB. Although not necessary for the demo, the container also has the VSCode extension for MongoDB installed so you can inspect the DB. You can use the `mongodb://localhost:27017` connection string and directly browse the dbu or use a mongodb playground to run e.g.:
 
 ```js
 /* global use, db */
