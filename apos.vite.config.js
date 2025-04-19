@@ -3,6 +3,7 @@ import { defineConfig } from '@apostrophecms/vite/vite';
 // import react from '@vitejs/plugin-react';
 import vue from '@vitejs/plugin-vue';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+// import tailwindcss from '@tailwindcss/vite';
 
 import path from 'node:path';
 
@@ -16,6 +17,9 @@ export default defineConfig({
       // because the Vite root is not the same as the Apostrophe root.
       configFile: path.join(process.cwd(), 'svelte.config.js')
     })
+    // We are not using the recommended vite plugin yet,
+    // but postcss. The reason for that is a strange, buggy behavior.
+    // There is a chance tailwind vite plugin is built for Vite v6.
   ],
   server: {
     watch: {
