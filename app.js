@@ -50,7 +50,7 @@ apostrophe({
 
     // The counter app widgets
     'counter-vue-widget': {},
-    'counter-svelte-widget': {},
+    // 'counter-svelte-widget': {},
     'counter-react-widget': {}
   }
 });

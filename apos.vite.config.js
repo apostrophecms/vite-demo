@@ -2,26 +2,27 @@ import { defineConfig } from '@apostrophecms/vite/vite';
 
 // import react from '@vitejs/plugin-react';
 import vue from '@vitejs/plugin-vue';
-import { svelte } from '@sveltejs/vite-plugin-svelte';
+// import { svelte } from '@sveltejs/vite-plugin-svelte';
 
-import path from 'node:path';
+// import path from 'node:path';
 
 export default defineConfig({
-  // aposVite: {
-  //   resolvePackageRoots: [
-  //     '@apostrophecms/vite',
-  //     'apostrophe'
-  //   ]
-  // },
+  aposVite: {
+    resolvePackageRoots: [
+      '@apostrophecms/vite',
+      'apostrophe'
+    ]
+  },
   plugins: [
     // See ./modules/vite-react/index.js for ReactJS integration via module
     // `build` configuration.
-    vue(),
-    svelte({
-      // We need to tell Svelte where to find the config file,
-      // because the Vite root is not the same as the Apostrophe root.
-      configFile: path.join(process.cwd(), 'svelte.config.js')
-    })
+    vue()
+    // Svelete backup is broken. It needs re-implementation.
+    // svelte({
+    //   // We need to tell Svelte where to find the config file,
+    //   // because the Vite root is not the same as the Apostrophe root.
+    //   configFile: path.join(process.cwd(), 'svelte.config.js')
+    // })
   ],
   server: {
     watch: {

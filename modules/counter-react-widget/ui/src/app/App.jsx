@@ -69,7 +69,7 @@ function App({
         </div>
 
         {/* Title from the widget data */}
-        <h2 class="text-5xl">{title}</h2>
+        <h2 className="text-5xl">{title}</h2>
 
         {/* A server error message will appear here */}
         {message && <p className="mt-4 p-4 bg-red-400">[Server Message] {message}</p>}
