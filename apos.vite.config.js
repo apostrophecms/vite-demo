@@ -7,6 +7,12 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 import path from 'node:path';
 
 export default defineConfig({
+  // aposVite: {
+  //   resolvePackageRoots: [
+  //     '@apostrophecms/vite',
+  //     'apostrophe'
+  //   ]
+  // },
   plugins: [
     // See ./modules/vite-react/index.js for ReactJS integration via module
     // `build` configuration.
