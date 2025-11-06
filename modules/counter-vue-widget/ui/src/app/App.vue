@@ -1,5 +1,6 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { calculateStats, formatTime } from "@vite-demo/utils";
 
 const { id, options, widget } = defineProps({
   id: String,
@@ -10,10 +11,22 @@ const { id, options, widget } = defineProps({
 const count = ref(widget.counter.count || 0);
 const message = ref("");
 const debugState = ref(false);
+const startTime = ref(Date.now());
+const timeElapsed = ref("");
 const debugLabel = computed(
   () => `${debugState.value ? "Hide" : "Show"} Debug`
 );
 const debug = JSON.stringify({ id, widget, options }, null, 2);
+
+// Calculate stats using workspace package
+const stats = computed(() => calculateStats(count.value));
+
+// Update time elapsed using the transient dependency (pretty-ms)
+onMounted(() => {
+  setInterval(() => {
+    timeElapsed.value = formatTime(startTime.value);
+  }, 1000);
+});
 
 const onClick = () => {
   message.value = "";
@@ -63,6 +76,15 @@ const onDebugClick = () => {
           from the vite template installs. -->
     <div class="card">
       <button class="cbutton" @click="onClick">count is {{ count }}</button>
+      <p class="mt-4 text-sm">
+        Time elapsed: {{ timeElapsed }}
+      </p>
+      <div class="mt-4 text-sm">
+        <p><strong>Stats from workspace package:</strong></p>
+        <p>Doubled: {{ stats.doubled }}</p>
+        <p>Squared: {{ stats.squared }}</p>
+        <p>Is Even: {{ stats.isEven ? "Yes" : "No" }}</p>
+      </div>
     </div>
 
     <!-- A toggle for debugging - show App props (coming from the server) -->

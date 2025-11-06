@@ -1,0 +1,14 @@
+{
+  "name": "@vite-demo/utils",
+  "version": "1.0.0",
+  "description": "Shared utilities for vite-demo workspace",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./formatter": "./src/formatter.js"
+  },
+  "dependencies": {
+    "pretty-ms": "^9.2.0"
+  }
+}

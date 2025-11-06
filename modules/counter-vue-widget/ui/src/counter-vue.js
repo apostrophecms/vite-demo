@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { parse } from '@/counter/src/player';
+import { greet } from '@vite-demo/utils';
 import App from './app/App.vue';
 
 // Environments are available here (`import.meta.env.PROD`, `import.meta.env.DEV`, etc.)
@@ -27,6 +28,10 @@ function player(el) {
     widget,
     options
   } = parse(el);
+
+  // Test workspace package import
+  console.log('[counter-vue] Workspace package test:', greet(widget.title || 'Vue Widget'));
+
   // 3. Mount and render the app
   createApp(App, {
     id,
