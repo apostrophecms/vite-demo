@@ -8,10 +8,11 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
   aposVite: {
-    resolvePackageRoots: [
-      '@apostrophecms/vite',
-      'apostrophe'
-    ]
+    resolvePackageRoots: true
+    // Or provide packages explicitly (core packages are always included):
+    // resolvePackageRoots: [
+    //   '@apostrophecms/some-module'
+    // ]
   },
   plugins: [
     // See ./modules/vite-react/index.js for ReactJS integration via module
